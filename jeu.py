@@ -56,9 +56,10 @@ class Jeu(Model):
         lyric=self.getlyricbyid(myhash["lyric_id"])
         print(lyric,"M Y H A S H")
         filename=Chaine().fichier("hey.gif")
+        filename2=Chaine().fichier("hey.gif")
         print(filename,"M Y H A S H")
         myhash["pic"]=filename
-        self.program.myargs(["sh","./cado/textjeu.sh",lyric["text"],lyric["pic"],filename])
+        self.program.myargs(["sh","./cado/textjeu.sh",lyric["text"],lyric["pic"],filename,filename2])
         self.program.run()
         myid=None
         try:

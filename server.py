@@ -204,8 +204,10 @@ class S(BaseHTTPRequestHandler):
         print("param session",sess)
         print("param get",myparams)
         if sess:
-            for cookie in req.cookies:
-                    cookie.value = sess[cookie.name]
+            #for cookie in req.cookies:
+            for cookie in sess:
+                    #cookie.value = sess[cookie.name]
+                    req.cookies[cookie] = sess[cookie]
 
         self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json())
         self.wfile.write(myProgram.get_html())
@@ -224,8 +226,11 @@ class S(BaseHTTPRequestHandler):
         myProgram=Route().run(path=str(self.path),params=myparams,session=dictcook,url=self.path,post_data=self.deal_post_data)
         sess= myProgram.get_session()
         if sess:
-          for x in sess:
-            req.cookies.set(x,sess[x])
+          #for x in sess:
+          for cookie in sess:
+            #req.cookies.set(x,sess[x])
+            #req.cookies[cookie] = sess[cookie]
+            req.cookies.set(cookie,sess[cookie])
 
         self._set_response(redirect=myProgram.get_redirect(),cookies=req.cookies,pic=myProgram.get_pic(),js=myProgram.get_js(),css=myProgram.get_css(),json=myProgram.get_json())
         self.wfile.write(myProgram.get_html())

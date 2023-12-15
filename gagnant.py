@@ -10,7 +10,8 @@ class Gagnant(Model):
         self.cur=self.con.cursor()
         self.cur.execute("""create table if not exists gagnant(
         id integer primary key autoincrement,
-        name text,
+        user_id text,
+        jeu_id text,
             pic text
                     );""")
         self.con.commit()
@@ -34,23 +35,15 @@ class Gagnant(Model):
         return row
     def create(self,params):
         print("ok")
-        myhash={}
-        for x in params:
-            if 'confirmation' in x:
-                continue
-            if 'envoyer' in x:
-                continue
-            if '[' not in x and x not in ['routeparams']:
-                #print("my params",x,params[x])
-                try:
-                  myhash[x]=str(params[x].decode())
-                except:
-                  myhash[x]=str(params[x])
-        print("M Y H A S H")
-        print(myhash,myhash.keys())
-        myid=None
+        myhash={"jeu_id": params["jeu_id"], "user_id": params["user_id"]}
+        filename=Chaine().fichier("hey.gif")
+        filename2=Chaine().fichier("hey.gif")
+        print(filename,"M Y H A S H")
+        myhash["pic"]=filename
+        self.program.myargs(["sh","./cado/gagnantjeu.sh",params["piccadeau"],params["picuser"],filename,params["userfullname"],params["cadeauname"],filename2])
+        self.program.run()
         try:
-          self.cur.execute("insert into gagnant (name,pic) values (:name,:pic)",myhash)
+          self.cur.execute("insert into gagnant (jeu_id,user_id,pic) values (:jeu_id,:user_id,:pic)",myhash)
           self.con.commit()
           myid=str(self.cur.lastrowid)
         except Exception as e:

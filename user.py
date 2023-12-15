@@ -2,10 +2,12 @@ import sqlite3
 import sys
 import re
 from model import Model
+from gagnant import Gagnant
 class User(Model):
     def __init__(self):
         self.con=sqlite3.connect(self.mydb)
         self.con.row_factory = sqlite3.Row
+        self.dbGagnant=Gagnant()
         self.cur=self.con.cursor()
         self.cur.execute("""create table if not exists users(
         id integer primary key autoincrement,
@@ -23,6 +25,19 @@ class User(Model):
                 );""")
         self.con.commit()
         #self.con.close()
+    def userwin(user_id,song_id,jeu_id):
+        print("hey")
+        self.cur.execute("select  (select (user.firstname || " " || user.lastname) from user where id = ?) as userfullname,(select id from user where id = ?) as user_id,(select pic from user where id = ?) as picuser, (SELECT id FROM cado ORDER BY RANDOM() LIMIT 1) as cadeauid, jeu.id, song.id as song_id from jeu left join lyric on lyric.id = jeu.lyric_id left join song on lyric.song_id = song.id where jeu.id = ? and song.id = ?",(user_id,user_id,jeu_id, song_id))
+        row=dict(self.cur.fetchone())
+        hey=self.cur.execute("select pic,name from cado where id ? ",(row["cadeauid"],))
+        row["piccadeau"]=hey["pic"]
+        row["nomcadeau"]=hey["name"]
+
+        if row is not None:
+            self.dbGagnant.create(row)
+        return row
+
+
     def getbyemailpw(self,email,pw):
         print("PARAMS email, pw")
         print(email, pw)
@@ -33,7 +48,7 @@ class User(Model):
         print(dict(row))
         print(row)
         if row:
-            return {"notice":"vous êtes connecté","name": row["nomcomplet"],"email": row["otheremail"]}
+            return {"user_id":row["id"],"notice":"vous êtes connecté","name": row["nomcomplet"],"email": row["otheremail"]}
         else:
             return {"notice":"","name":"","email": ""}
     def getall(self):
@@ -84,10 +99,7 @@ class User(Model):
         
         myid=row["id"]
 
-        print("my row id", myid)
-        #print(arr, "my array")
-        self.con.commit()
-        return {"notice": "vous avez été inscrit(e)","email": row["otheremail"],"name":row["nomcomplet"]}
+        return {"user_id":myid,"notice": "vous avez été inscrit(e)","email": row["otheremail"],"name":row["nomcomplet"]}
 
 
     def update(self,params):

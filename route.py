@@ -167,7 +167,13 @@ class Route():
         if self.user["email"]:
             self.set_session(self.user)
             self.set_session(self.user)
-            self.set_json("{\"redirect\":\"/chat\"}")
+            if self.Program.get_session_param("jeu_id") and self.Program.get_session_param("user_id"):
+                self.set_json("{\"redirect\":\"/welcome\"}")
+            elif self.get_session("user_id"):
+                self.set_json("{\"redirect\":\"/welcome\"}")
+            else:
+                self.set_json("{\"redirect\":\"/chat\"}")
+
         else:
             self.set_json("{\"redirect\":\"/signin\"}")
             print("session login",self.Program.get_session())
@@ -243,17 +249,18 @@ class Route():
         myparam=self.get_post_data()(params=("businessaddress","gender","profile","metier", "otheremail", "password","zipcode", "email", "mypic","postaladdress","nomcomplet","password_confirmation"))
         self.user=self.dbUsers.create(myparam)
         if self.user["email"]:
-            self.set_session(self.user)
-            self.set_json("{\"redirect\":\"/welcome\"}")
-            return self.render_figure.render_json()
+            if self.Program.get_session_param("jeu_id") and self.Program.get_session_param("user_id"):
+                self.set_json("{\"redirect\":\"/welcome\"}")
+            else:
+                self.set_json("{\"redirect\":\"/chat\"}")
         else:
-            self.set_json("{\"redirect\":\"/e\"}")
-            return self.render_figure.render_json()
+            self.set_json("{\"redirect\":\"/signin\"}")
+        return self.render_figure.render_json()
     def joueraujeu(self,params={}):
-        self.set_json("{\"redirect\":\"/signin\"}")
         getparams=("song_id","jeu_id")
         myparam=self.get_post_data()(params=getparams)
-        self.set_session_params(myparam)
+        print("jouer au jeu")
+        self.Program.set_some_session_params(myparam)
         #self.set_redirect("/signin")
         #return self.render_figure.render_redirect()
         return self.render_figure.render_my_json("{\"redirect\":\"/signin\"}")
@@ -338,6 +345,7 @@ class Route():
                print(True if x else False)
                if x:
                    params["routeparams"]=x.groups()
+                   self.Program.gagnant()
                    try:
                        self.Program.set_html(html=mycase(params))
 
@@ -345,6 +353,7 @@ class Route():
                    except Exception:  
                        self.Program.set_html(html="<p>une erreur s'est produite "+str(traceback.format_exc())+"</p><a href=\"/\">retour à l'accueil</a>")
                    self.Program.redirect_if_not_logged_in()
+
                    return self.Program
                else:
                    self.Program.set_html(html="<p>la page n'a pas été trouvée</p><a href=\"/\">retour à l'accueil</a>")
