@@ -260,7 +260,7 @@ class Route():
         getparams=("song_id","jeu_id")
         myparam=self.get_post_data()(params=getparams)
         print("jouer au jeu")
-        self.Program.set_some_session_params(myparam)
+        self.Program.set_session_params(myparam)
         #self.set_redirect("/signin")
         #return self.render_figure.render_redirect()
         return self.render_figure.render_my_json("{\"redirect\":\"/signin\"}")

@@ -13,7 +13,7 @@ class Directory():
         self.dbUser=User()
         self.html=""
         self.url=""
-        self.mesparams=["user_id","email","name","notice"]
+        self.mesparams=["jeu_id","song_id","user_id","email","name","notice"]
         self.redirect=False
     def logout(self):
         for x in self.mesparams:
@@ -123,17 +123,19 @@ class Directory():
             print("hey")
             user_id=None
         try:
-            jeu_id=self.get_session_param("jeu_id")
+            jeu_id=int(self.get_session_param("jeu_id"))
         except:
             jeu_id=None
         try:
-            song_id=self.get_session_param("song_id")
+            song_id=int(self.get_session_param("song_id"))
         except:
             song_id=None
+        print("/////////////////////////////////////////////////")
+        print("/////////////////GAGNANT/////////////////////////")
+        print("/////////////////////////////////////////////////")
+        print(user_id,song_id,jeu_id)
         if user_id and song_id and jeu_id:
-            print("/////////////////////////////////////////////////")
-            print("/////////////////GAGNANT/////////////////////////")
-            print("/////////////////////////////////////////////////")
+
             self.dbUser.userwin(user_id,song_id,jeu_id)
             self.set_session_param_null("song_id")
             self.set_session_param_null("jeu_id")
