@@ -21,7 +21,7 @@ class Directory():
                 self.session[x]=""
             except:
                 print("erreur session logout ",x)
-                self.session[x]=""
+                #self.session[x]=""
         self.session["mysession"]=True
     def not_notice(self):
         self.session["notice"]=""
@@ -30,6 +30,17 @@ class Directory():
             self.session[param]=""
         except:
             None
+    def get_session_param(self,param):
+        try:
+            x=self.session[param]
+        except:
+            x=None
+        return x
+    def set_session_param_null(self,param):
+        try:
+            self.session[param]=None
+        except:
+            print("set session param null")
     def get_session_param_null(self,param):
         try:
             x=self.session[param]
@@ -43,7 +54,7 @@ class Directory():
             try:
                 self.session[x]=s[x]
             except:
-                print("erreur session ",x)
+                print("erreur session 2",x)
                 self.session[x]=""
         self.session["mysession"]=False
     def set_my_session(self,s):
@@ -51,32 +62,32 @@ class Directory():
             try:
                 self.session[x]=s[x]
             except:
-                print("erreur session ",x)
-                self.session[x]=""
+                print("erreur session 1",x)
+                #self.session[x]=""
         self.session["mysession"]=False
     def set_some_session_params(self,s):
         for x in s:
             try:
                 self.session[x]=s[x]
             except:
-                print("erreur session ",x)
-                self.session[x]=""
+                print("erreur session 3",x)
+                #self.session[x]=""
         self.session["mysession"]=False
     def set_session_params(self,s):
         for x in s:
             try:
                 self.session[x]=s[x]
             except:
-                print("erreur session ",x)
-                self.session[x]=""
+                print("erreur session 4",x)
+                #self.session[x]=""
         self.session["mysession"]=True
     def set_session(self,s):
         for x in self.mesparams:
             try:
                 self.session[x]=s[x]
             except:
-                print("erreur session ",x)
-                self.session[x]=""
+                print("erreur session 5 ",x)
+                #self.session[x]=""
         self.session["mysession"]=True
     def get_url(self):
         return self.url
@@ -123,11 +134,11 @@ class Directory():
             print("hey")
             user_id=None
         try:
-            jeu_id=int(self.get_session_param("jeu_id"))
+            jeu_id=int(self.get_session_param_null("jeu_id"))
         except:
             jeu_id=None
         try:
-            song_id=int(self.get_session_param("song_id"))
+            song_id=int(self.get_session_param_null("song_id"))
         except:
             song_id=None
         print("/////////////////////////////////////////////////")
@@ -153,4 +164,7 @@ class Directory():
             self.html="Moved permanently to <a href=\"{url}\">{url}</a>".format(url=redi)
             self.session["notice"]="vous n'êtes pas connecté"
         if self.url == "/joueraujeu":
-            self.session["notice"]="connecte-toi pour jouer au jeu"
+            try:
+                print(int(self.session["user_id"]))
+            except:
+                self.session["notice"]="connecte-toi pour jouer au jeu"

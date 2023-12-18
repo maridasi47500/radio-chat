@@ -25,13 +25,17 @@ class User(Model):
                 );""")
         self.con.commit()
         #self.con.close()
-    def userwin(user_id,song_id,jeu_id):
+    def userwin(self,user_id,song_id,jeu_id):
         print("hey")
-        self.cur.execute("select  (select (user.firstname || " " || user.lastname) from user where id = ?) as userfullname,(select id from user where id = ?) as user_id,(select pic from user where id = ?) as picuser, (SELECT id FROM cado ORDER BY RANDOM() LIMIT 1) as cadeauid, jeu.id, song.id as song_id from jeu left join lyric on lyric.id = jeu.lyric_id left join song on lyric.song_id = song.id where jeu.id = ? and song.id = ?",(user_id,user_id,jeu_id, song_id))
-        row=dict(self.cur.fetchone())
-        hey=self.cur.execute("select pic,name from cado where id ? ",(row["cadeauid"],))
-        row["piccadeau"]=hey["pic"]
-        row["nomcadeau"]=hey["name"]
+        self.cur.execute("select  (select users.nomcomplet from users where id = ?) as userfullname,(select id from users where id = ?) as user_id,(select pic from users where id = ?) as picuser, (SELECT id FROM cado ORDER BY RANDOM() LIMIT 1) as cadeauid, jeu.id, song.id as song_id from jeu left join lyric on lyric.id = jeu.lyric_id left join song on lyric.song_id = song.id where jeu.id = ? and song.id = ?",(user_id,user_id,user_id,jeu_id, song_id))
+        row=(self.cur.fetchone())
+        row=dict(row)
+        hey=self.cur.execute("select pic,name from cado where id = ? ",(row["cadeauid"],))
+        hi=self.cur.fetchone()
+        row["piccadeau"]=hi["pic"]
+        row["nomcadeau"]=hi["name"]
+        row["song_id"]=song_id
+        row["jeu_id"]=jeu_id
 
         if row is not None:
             self.dbGagnant.create(row)
