@@ -12,6 +12,9 @@
 		<input type="submit" name="ok"/>
 	</div>
 </form>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+	<%=render_collection(collection=dbCado.getall(), partial='welcome/_cado.html', as_='cado')%>
+</div>
 <h1 id="gagnant">gagnant</h1>
 <form action="/gagnant">
 	<div class="field">

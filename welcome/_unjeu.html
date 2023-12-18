@@ -6,11 +6,11 @@
 								<h5>quelle est cette chanson ?</h5>
 								<p class="card-text">
 								<form action="/joueraujeu" id="joueraujeu">
-									<input name="jeu_id" type="hidden" value="<%=jeu["id"]%>"/>
+									<input name="jeu_id" type="hidden" value="<%=jeu["jeuid"]%>"/>
 									<div class="field">
-										<select data-jeu-id="<%=jeu["id"]%>" name="song_id" id="choisischanson">
+										<select data-jeu-id="<%=jeu["jeuid"]%>" name="song_id" id="choisischanson">
 											<option>choisir une chanson</option>
-											<%=render_collection(collection=dbSong.getall(), partial='welcome/_somesong.html', as_='song')%>
+											<%=render_collection(collection=dbSong.getthree(jeu["songid"]), partial='welcome/_somesong.html', as_='song')%>
 										</select>
 									</div>
 									<div class="field">

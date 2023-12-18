@@ -3,7 +3,6 @@ import sqlite3
 import sys
 import re
 from model import Model
-import random
 from fichier import Fichier
 from lyric import Lyric
 from artist import Artist
@@ -23,22 +22,17 @@ class Song(Model):
         self.con.commit()
         #self.con.close()
     def getthree(self,myid):
-        self.cur.execute("select * from song where id = ? limit 1",(myid,))
-        self.con.commit()
+        self.cur.execute("select * from song where id = ?",(myid,))
+
         row1=self.cur.fetchone()
+        self.cur.execute("select * from song where id <> ?",(myid,))
 
-        self.cur.execute("select * from song where id <> ? order by RANDOM() limit 1",(myid,))
-        self.con.commit()
         row2=self.cur.fetchone()
+        self.cur.execute("select * from song where id <> ? and id <> ?",(myid,row2["id"]))
 
-        self.cur.execute("select * from song where id <> ? and id <> ? order by RANDOM() limit 1",(myid,row2["id"]))
-        self.con.commit()
-        row3=self.cur.fetchone()
-        rows=[row1,row2,row3]
-        print("rows : ",rows)
-        print("rows with my id: ",myid)
-        random.shuffle(rows)
-        return rows
+        row2=self.cur.fetchone()
+        rows=[row1]
+        return row
     def getall(self):
         self.cur.execute("select * from song")
 

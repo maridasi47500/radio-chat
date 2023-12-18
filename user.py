@@ -27,7 +27,7 @@ class User(Model):
         #self.con.close()
     def userwin(self,user_id,song_id,jeu_id):
         print("hey")
-        self.cur.execute("select  (select users.nomcomplet from users where id = ?) as userfullname,(select id from users where id = ?) as user_id,(select pic from users where id = ?) as picuser, (SELECT id FROM cado ORDER BY RANDOM() LIMIT 1) as cadeauid, jeu.id, song.id as song_id from jeu left join lyric on lyric.id = jeu.lyric_id left join song on lyric.song_id = song.id where jeu.id = ? and song.id = ?",(user_id,user_id,user_id,jeu_id, song_id))
+        self.cur.execute("select  (select hellouser.nomcomplet from users hellouser where hellouser.id = ?) as userfullname,(select heyuser.id from users heyuser where heyuser.id = ?) as user_id,(select myuser.mypic from users myuser where myuser.id = ?) as picuser, (SELECT cado.id FROM cado ORDER BY RANDOM() LIMIT 1) as cadeauid, jeu.id, song.id as song_id from jeu left join lyric on lyric.id = jeu.lyric_id left join song on lyric.song_id = song.id where jeu.id = ? and song.id = ?",(user_id,user_id,user_id,jeu_id, song_id))
         row=(self.cur.fetchone())
         row=dict(row)
         hey=self.cur.execute("select pic,name from cado where id = ? ",(row["cadeauid"],))

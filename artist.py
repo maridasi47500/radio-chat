@@ -34,8 +34,8 @@ class Artist(Model):
     def getbyname(self,myhash):
         try:
           self.cur.execute("select * from artist where name = ?",(myhash["name"],))
-          self.con.commit()
-          row=int(self.cur.fetchone()["id"])
+          row=self.cur.fetchone()
+          row=int(row["id"])
         except:
           row=None
         return row
@@ -95,7 +95,7 @@ class Artist(Model):
           if not myid:
             self.cur.execute("insert or ignore into artist (name,pic) values (:name,:pic)",myhash)
             self.con.commit()
-          myid=int(self.cur.lastrowid)
+            myid=int(self.cur.lastrowid)
           print("myid",myid)
 
         except Exception as e:

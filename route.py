@@ -168,9 +168,9 @@ class Route():
             self.set_session(self.user)
             self.set_session(self.user)
             if self.Program.get_session_param("jeu_id") and self.Program.get_session_param("user_id"):
-                self.set_json("{\"redirect\":\"/welcome\"}")
+                self.set_json("{\"redirect\":\"/\"}")
             elif self.get_session("user_id"):
-                self.set_json("{\"redirect\":\"/welcome\"}")
+                self.set_json("{\"redirect\":\"/\"}")
             else:
                 self.set_json("{\"redirect\":\"/chat\"}")
 
@@ -250,7 +250,7 @@ class Route():
         self.user=self.dbUsers.create(myparam)
         if self.user["email"]:
             if self.Program.get_session_param("jeu_id") and self.Program.get_session_param("user_id"):
-                self.set_json("{\"redirect\":\"/welcome\"}")
+                self.set_json("{\"redirect\":\"/\"}")
             else:
                 self.set_json("{\"redirect\":\"/chat\"}")
         else:

@@ -20,7 +20,7 @@ class Gagnant(Model):
         self.con.commit()
         #self.con.close()
     def getall(self):
-        self.cur.execute("select * from gagnant")
+        self.cur.execute("select * from gagnant order by id desc")
 
         row=self.cur.fetchall()
         return row
@@ -44,7 +44,9 @@ class Gagnant(Model):
 
         print(filename,"M Y H A S H")
         myhash["pic"]=filename
-        self.program.myargs(["sh","./cado/gagnantjeu.sh",params["piccadeau"],params["picuser"],filename,params["userfullname"],params["nomcadeau"],filename2])
+        tousmesarg=["sh","./cado/gagnantjeu.sh",params["piccadeau"],params["picuser"],filename,params["userfullname"],params["nomcadeau"],filename2]
+        print("TOUS mes arg", tousmesarg)
+        self.program.myargs(tousmesarg)
         self.program.run()
         try:
           self.cur.execute("insert into gagnant (jeu_id,user_id,pic) values (:jeu_id,:user_id,:pic)",myhash)
