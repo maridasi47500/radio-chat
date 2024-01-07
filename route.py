@@ -7,6 +7,7 @@ from gagnant import Gagnant
 from song import Song
 from cado import Cado
 from lyric import Lyric
+from spin import Spin
 from artist import Artist
 from jeu import Jeu
 
@@ -28,6 +29,7 @@ class Route():
         self.dbScript=Myscript()
         self.dbRecording=Myrecording()
         self.dbSong=Song()
+        self.jeuRoue=Spin()
         self.dbJeu=Jeu()
         self.dbArtist=Artist()
         self.dbLyric=Lyric()
@@ -112,7 +114,17 @@ class Route():
         print("hello action")
         self.render_figure.set_param("enregistrer",True)
         return self.render_figure.render_figure("welcome/radio.html")
+    def datareach(self,search):
+        print("hello action")
+        return self.render_figure.render_figure("welcome/datareach.html")
+    def spinwin(self,search):
+        print("hello action")
+        self.render_figure.set_param("rouemessage",self.jeuRoue.getmessage())
+        self.render_figure.set_param("jeu",self.jeuRoue.spin())
+        return self.render_figure.render_figure("welcome/spinwin.html")
     def hello(self,search):
+        self.render_figure.set_param("rouemessage",self.jeuRoue.getmessage())
+        self.render_figure.set_param("jeu",self.jeuRoue.spin())
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
     def passage(self,myscrit):
@@ -302,6 +314,8 @@ class Route():
             path=path.split("?")[0]
             print("link route ",path)
             ROUTES={
+                    '^/spin_win$': self.spinwin,
+                    '^/data_reach$': self.datareach,
                     '^/creejeu$': self.monjeu,
                     '^/joueraujeu$': self.joueraujeu,
                     '^/jouerjeux$': self.jouerjeux,

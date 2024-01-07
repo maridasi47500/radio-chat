@@ -17,3 +17,7 @@
 																		      </button>
 </div>
 
+<div id="jouerrouegagner" style="transform: rotate(<%=params["jeu"]["rouetourne"]%>deg);"><span>\/</span>
+<%=render_collection(collection=params['rouemessage'], partial='welcome/_messageroue.html', as_='hey')%>
+</div>
+<div id="gagnant-msg"><%=params["jeu"]["message"]%></div>
